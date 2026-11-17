@@ -1,0 +1,6 @@
+version = 1
+
+[[annotations]]
+path = [".gitignore", ".gitmodules", "LICENSE", "Cargo.lock"]
+SPDX-FileCopyrightText = "2026 Stanislav Yaglo"
+SPDX-License-Identifier = "Apache-2.0"

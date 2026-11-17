@@ -1,0 +1,6 @@
+build*/
+.sdk/
+.run/
+__pycache__/
+target/
+.DS_Store

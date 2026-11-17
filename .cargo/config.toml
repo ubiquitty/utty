@@ -1,0 +1,5 @@
+# Copyright (C) 2026 Stanislav Yaglo
+# SPDX-License-Identifier: Apache-2.0
+[target.'cfg(target_os = "linux")']
+linker = "clang"
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]

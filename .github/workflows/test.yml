@@ -1,0 +1,31 @@
+# Copyright (C) 2026 Stanislav Yaglo
+# SPDX-License-Identifier: Apache-2.0
+name: Rust frontend
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    env:
+      UBIQUITTY_CORE_SDK: ${{ github.workspace }}/.sdk/split-core-release/install
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y clang lld libc++-dev libc++abi-dev cmake ninja-build python3
+      - if: runner.os == 'macOS'
+        run: brew install cmake ninja
+      - run: scripts/build.sh --host
+      - run: cargo fmt --check
+      - run: cargo clippy --release --locked --all-targets -- -D warnings
+      - run: python3 tests/smoke.py
+      - run: python3 tests/modern.py
